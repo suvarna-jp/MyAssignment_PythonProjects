@@ -1,0 +1,222 @@
+/***********************************/
+/***** Users Table SQL *************/
+/***********************************/
+
+DROP TABLE Users;
+
+CREATE TABLE IF NOT EXISTS Users (
+	"user_ID"	INTEGER PRIMARY KEY AUTOINCREMENT,
+	"user_RegnNum"	NUMERIC NOT NULL UNIQUE,
+	"user_Password"	TEXT NOT NULL,
+	"user_Name"	TEXT NOT NULL,
+	"user_Address"	TEXT NOT NULL,
+	"user_EMail"	TEXT NOT NULL,
+	"user_Phone"	TEXT NOT NULL
+);
+
+SELECT * FROM Users;
+
+SELECT max(user_ID) FROM Users;
+
+SELECT * FROM Users WHERE user_RegnNum = "U000000004";
+
+INSERT INTO Users (user_RegnNum, user_Password, user_Name, user_Address, user_EMail, user_Phone) 
+VALUES ("U000000001", "abcd$", "Reema", "abcd_address", "abcd@email.com", "901-203-5555");
+INSERT INTO Users (user_RegnNum, user_Password, user_Name, user_Address, user_EMail, user_Phone) 
+VALUES ("U000000002", "efgh$", "Ronak", "efgh_address", "efgh@email.com", "298-789-8888");
+INSERT INTO Users (user_RegnNum, user_Password, user_Name, user_Address, user_EMail, user_Phone) 
+VALUES ("U000000003", "pqrs$", "Srisha", "pqrs_address", "pqrs@email.com", "222-333-4444");
+INSERT INTO Users (user_RegnNum, user_Password, user_Name, user_Address, user_EMail, user_Phone) 
+VALUES ("U000000004", "uvw$", "Sam", "uvw_address", "uvw@email.com", "333-666-8888");
+
+UPDATE Users SET user_Phone = "222-444-6666" WHERE user_RegnNum = "U000000002";
+UPDATE Users SET user_EMail = "efgh123@email.com" WHERE user_RegnNum = "U000000002";
+
+DELETE FROM Users WHERE user_RegnNum = "U000000004";
+
+
+
+
+/****************************************/
+/***** Librarians Table SQL *************/
+/****************************************/
+
+DROP TABLE Librarians;
+
+CREATE TABLE IF NOT EXISTS Librarians (
+            "librn_ID" INTEGER PRIMARY KEY AUTOINCREMENT, 
+            "librn_RegnNum" NUMERIC NOT NULL UNIQUE, 
+            "librn_Password" TEXT NOT NULL, 
+            "librn_Name" TEXT NOT NULL, 
+            "librn_Address" TEXT NOT NULL, 
+            "librn_EMail" TEXT NOT NULL, 
+            "librn_Phone" TEXT NOT NULL
+            );
+
+SELECT * FROM Librarians;
+
+SELECT max(librn_ID) FROM Librarians;
+
+SELECT * FROM Librarians WHERE librn_RegnNum = "L000000003";
+
+INSERT INTO Librarians (librn_RegnNum, librn_Password, librn_Name, librn_Address, librn_EMail, librn_Phone) 
+VALUES ("L000000001", "labcd$", "Phantom", "labcd_address", "labcd@email.com", "901-563-5665");
+INSERT INTO Librarians (librn_RegnNum, librn_Password, librn_Name, librn_Address, librn_EMail, librn_Phone) 
+VALUES ("L000000002", "lefgd$", "Spiderman", "lefgd_address", "lefgd@email.com", "444-363-5677");
+INSERT INTO Librarians (librn_RegnNum, librn_Password, librn_Name, librn_Address, librn_EMail, librn_Phone) 
+VALUES ("L000000003", "lpqrs$", "Alice", "lpqrs_address", "lpqrs@email.com", "255-676-3456");
+INSERT INTO Librarians (librn_RegnNum, librn_Password, librn_Name, librn_Address, librn_EMail, librn_Phone) 
+VALUES ("L000000004", "lghj$", "Elsa", "lghj_address", "lghj@email.com", "787-467-6868");
+INSERT INTO Librarians (librn_RegnNum, librn_Password, librn_Name, librn_Address, librn_EMail, librn_Phone) 
+VALUES ("L000000005", "lete$", "Jini", "lete_address", "lete@email.com", "454-455-7898");
+INSERT INTO Librarians (librn_RegnNum, librn_Password, librn_Name, librn_Address, librn_EMail, librn_Phone) 
+VALUES ("L000000006", "lklm$", "Radha", "lklm_address", "lklm@email.com", "666-766-7766");
+
+
+DELETE FROM Librarians WHERE librn_RegnNum = "L000000004";
+
+
+
+/***********************************/
+/***** Books Table SQL *************/
+/***********************************/
+
+
+DROP TABLE Books;
+
+CREATE TABLE IF NOT EXISTS Books (
+	    "book_ID" INTEGER PRIMARY KEY AUTOINCREMENT,
+	    "book_Code" NUMERIC NOT NULL UNIQUE,
+	    "book_Name" TEXT NOT NULL,
+        "book_Author" TEXT NOT NULL,
+        "book_Publication" TEXT NOT NULL,
+	    "book_Category" TEXT NOT NULL,
+        "book_Fee" REAL NOT NULL,
+        "issued_By" NUMERIC REFERENCES Librarians(librn_RegnNum) ON UPDATE NO ACTION ON DELETE NO ACTION,
+        "issued_To" NUMERIC UNIQUE REFERENCES Users(user_RegnNum) ON UPDATE NO ACTION ON DELETE NO ACTION,
+        "issued_Date" TEXT, 
+        "availability_status" TEXT NOT NULL
+);
+
+SELECT * FROM Books;
+
+SELECT * FROM Books WHERE availability_status = 'YES';
+
+SELECT * FROM Books WHERE book_Code = "B000000002";
+
+SELECT book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee FROM Books WHERE book_Code = B000000003;
+
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000001", "The Secret Garden", "Frances", "Charles Baker Classics", "Fairy Tale", 20, "L000000006", "U000000004", "2019-09-04", "NO");
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000002", "The Puffin Book Of Classic School Stories", "Ruskin Bond", "Penguin Books India", "Fairy Tale", 20, NULL, NULL, NULL, "YES");
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000003", "Dork Diaries", "Rachel Renee Russel", "Russel Publication", "Documentary", 20, NULL, NULL, NULL, "YES");
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000004", "Shanghai Secrets", "Jackie Chan", "Dragon Books", "Action", 20, NULL, NULL, NULL, "YES");
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000005", "The Wimpy Kid", "Ronald Meyer", "Wimpy Classics", "Comedy", 20, "L000000001", "U000000002", "2019-08-15", "NO");
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000006", "Harry Potter", "J K Rowling", "Harry Potter Classics", "Mystery|Thriller", 20, "L000000002", "U000000005", "2019-07-12", "NO");
+INSERT INTO Books (book_Code, book_Name, book_Author, book_Publication, book_Category, book_Fee, issued_By, issued_To, issued_Date, availability_status) 
+VALUES ("B000000007", "The Hobbit", "J R R", "J R R Publications", "Fantasy|Fiction", 20, "L000000003", "U000000003", "2019-08-24", "NO");
+
+UPDATE Books SET book_Fee = 40 WHERE book_Code = "B000000006";
+UPDATE Books SET issued_By = "L000000003" WHERE book_Code = "B000000007";
+UPDATE Books SET issued_To = "U000000003" WHERE book_Code = "B000000005";
+
+UPDATE Books SET (issued_By, issued_To, issued_Date, availability_status) VALUES (?,?,?,?) WHERE book_Code = ?; #(updateBooksTuple)
+
+UPDATE Books SET issued_By = "L000000003", issued_To = "U000000003", issued_Date = date.today(), availability_status = "NO" WHERE book_Code = "B000000005";
+
+/***
+
+CREATE TRIGGER on_delete_set_default_Librarian AFTER DELETE ON Librarians BEGIN
+  UPDATE Books SET issued_By = (SELECT min(librn_RegnNum) FROM Librarians) WHERE issued_By = old.librn_RegnNum;
+END;
+
+DROP TRIGGER on_delete_set_default_Librarian;
+
+***/
+
+
+/*****************************************************************/
+/*********** BooksRentalTransactionHistory Table SQL *************/
+/*****************************************************************/
+
+DROP TABLE BooksRentalTransactionHistory;
+
+CREATE TABLE IF NOT EXISTS BooksRentalTransactionHistory (
+	"tr_ID"	INTEGER PRIMARY KEY AUTOINCREMENT,
+	"book_Code"	NUMERIC NOT NULL,
+	"issued_By"	NUMERIC REFERENCES Librarians(librn_RegnNum) ON UPDATE NO ACTION ON DELETE NO ACTION,
+	"issued_To"	NUMERIC UNIQUE REFERENCES Users(user_RegnNum) ON UPDATE NO ACTION ON DELETE NO ACTION,
+	"issued_Date"	TEXT NOT NULL,
+	"received_By"	NUMERIC REFERENCES Librarians(librn_RegnNum) ON UPDATE NO ACTION ON DELETE NO ACTION,
+	"return_Date"	TEXT NOT NULL,
+	"amount_Paid"	REAL NOT NULL
+);
+
+SELECT * FROM BooksRentalTransactionHistory;
+
+SELECT * FROM BooksRentalTransactionHistory WHERE book_Code = "B000000002";
+
+SELECT * FROM BooksRentalTransactionHistory WHERE issued_By = "L000000002";
+
+SELECT * FROM BooksRentalTransactionHistory WHERE issued_To = "U000000002";
+
+SELECT * FROM BooksRentalTransactionHistory WHERE issued_Date = "2019-09-04";
+
+SELECT * FROM BooksRentalTransactionHistory WHERE return_Date = "2019-09-04";
+
+
+
+
+
+
+
+/**** Extra Dump Codes ****
+
+SELECT 
+	Users.user_RegnNum, Users.user_Name, 
+	Books.book_Code, Books.book_Name, Books.issued_Date, Books.issued_To 
+FROM 
+	Users, Books 
+WHERE 
+	Users.user_RegnNum = Books.issued_To 
+AND 
+	Users.user_RegnNum = 'U000000004'; 
+
+
+
+SELECT book_Code, book_Name, book_Fee, issued_Date, issued_To FROM Books WHERE issued_To = 'U000000004';
+
+
+CREATE TABLE "Books" (
+	"book_ID"	INTEGER PRIMARY KEY AUTOINCREMENT,
+	"book_Code"	NUMERIC NOT NULL UNIQUE,
+	"book_Name"	TEXT NOT NULL,
+	"book_Author"	TEXT NOT NULL,
+	"book_Publication"	TEXT NOT NULL,
+	"book_Category"	TEXT NOT NULL,
+	"book_Fee"	REAL NOT NULL,
+	"issued_By"	NUMERIC,
+	"issued_To"	NUMERIC UNIQUE,
+	"issued_Date"	TEXT,
+	"availability_status"	TEXT NOT NULL DEFAULT 'YES',
+	FOREIGN KEY("issued_By") REFERENCES "Librarians"("librn_RegnNum") ON UPDATE NO ACTION ON DELETE NO ACTION,
+	FOREIGN KEY("issued_To") REFERENCES "Users"("user_RegnNum") ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+
+INSERT INTO BooksRentalTransactionHistory (book_Code, issued_By, issued_To, issued_Date, returned_Date, received_by, amount_Paid)
+VALUES
+(
+'B000000007',
+SELECT issued_By FROM Books WHERE book_Code = 'B000000007',
+SELECT issued_To FROM Books WHERE book_Code = 'B000000007',
+date.today(),
+<CURRENT_USER_REGN_NUM>,
+<amount_Paid>
+)
+
+**** End of Extra Dump Codes ****/
