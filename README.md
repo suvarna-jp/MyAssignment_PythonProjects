@@ -1,6 +1,7 @@
 # MyAssignment_PythonProjects
-    - Terminal Library Project
-    - Weather Forecast API Project
+
+- Terminal Library Project
+- Weather Forecast API Project
     
 ##  Suvarna_MVC_5Days_WeatherForecast_API
 
